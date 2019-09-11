@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * @author downey
+ * @author downey & Omidullah B.
  * @param <T>
  *
  */
@@ -33,19 +33,27 @@ public class MyArrayList<T> implements List<T> {
 	public static void main(String[] args) {
 		// run a few simple tests
 		MyArrayList<Integer> mal = new MyArrayList<Integer>();
-		mal.add(1);
-		mal.add(2);
-		mal.add(3);
+		mal.add(0);
+		mal.add(10);
+		mal.add(20);
+		mal.add(30);
+		mal.add(40);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 
-		mal.remove(new Integer(2));
+		mal.remove(2);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		if (size >= array.length) {
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+			}
+			array[size] = element;
+			size++;
+			return true;
 	}
 
 	@Override
@@ -110,7 +118,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		for(int i=0; i<size; i++) {   //go only  up to size because that's what is used
+			if(equals(target, array[i])) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -181,8 +193,15 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		T elementToRemove = array[index];
+		for(int i=index; i<size; i++) {
+				array[i]=array[i+1];
+		}
+		size--;
+		return elementToRemove;
 	}
 
 	@Override
@@ -201,8 +220,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		T currentElement =array[index];
+		array[index]= element;
+		
+		return currentElement;
 	}
 
 	@Override
